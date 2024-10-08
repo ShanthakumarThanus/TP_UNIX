@@ -2,7 +2,7 @@
 
 ### Partie Installation :
 
-L'installation s'est déroulé sans problème.
+L'installation s'est déroulée sans problème.
 
 ### Partie SSH :
 
