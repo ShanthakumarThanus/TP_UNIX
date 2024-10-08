@@ -1,5 +1,6 @@
 # UNIX - TP 01 : Installation Serveurs 
 
+L'installation s'est déroulé sans problème.
 
 ### Partie Installation :
 
