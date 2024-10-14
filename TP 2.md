@@ -81,4 +81,26 @@ Le nombre de processus créés depuis le démarrage "boot" est : 80.
 3.1 Pour afficher la liste ordonnée de tous les processus ancêtres de la commande ps en cours d'exécution avec pstree : `pstree -p | grep -A 10 -B 10 'ps'`.
 
 ### 4
-4.1 - Le processus le plus gourmand sur la machine est 
+4.1 - Dans top, pour afficher la liste de processus triée par occupation mémoire et décroissante, il faut appuyer simultanément sur `Shift + m`. 
+4.2 - Le processus le plus gourmand sur la machine Debian est sshd (PID 624). sshd signifie "SSH daemon" est un programme qui s'exécute en arrière-plan sur les systèmes
+Linux/Unix et qui permet aux utilisateurs de se connecter à une machine à distance via le protocole SSH. 
+
+4.3 :
+- La commandes permettant de passer l'affichage en couleur dnas top est tout simplement la touche `z`.
+- Mettre en avant la colonne de tri : `x`. 
+- Changer la colonne de trie : `Shift + f`.
+
+4.4 
+La commande `htop` contient de nombreux avantages par rapport à `top`. Les avantages sont :
+- interface plus conviviale et adaptée à la taille de l'affichage (des couleurs sont présent !)
+- possibilité d'arrêter (ou de killer) un processus sans connaître son PID
+- possibilité de modifier en direct la priorité d'un processus sans connaître son PID
+- pas de délai entre les actions
+- support de la souris
+La commande `htop` contient également des défauts malheureusement, tels que :
+- `htop` n'est pas installé par défaut, j'ai dû exécuter la commande `sudo apt install htop` avant de pouvoir l'utiliser
+- `htop` est plus gourmand sur la mémoire et le CPU en raison de son interface graphique et de son rafraîchissement plus détaillé, ce sont des facteurs à considérer
+lorsque l'on travail sur des systèmes très limités en ressources
+
+## 3 Exercice 2 : Arrêet d'un processus
+

@@ -1,0 +1,1 @@
+while true; do sleep 1; echo -n 'toto'; date --date '5 hours ago' +%T; done
