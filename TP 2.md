@@ -102,5 +102,38 @@ La commande `htop` contient également des défauts malheureusement, tels que :
 - `htop` est plus gourmand sur la mémoire et le CPU en raison de son interface graphique et de son rafraîchissement plus détaillé, ce sont des facteurs à considérer
 lorsque l'on travail sur des systèmes très limités en ressources
 
-## 3 Exercice 2 : Arrêet d'un processus
+## 3 Exercice 2 : Arrêt d'un processus
 
+date.sh : chaque seconde, ce script affiche le texte "date" suivi de l'heure actuelle au format HH:MM:SS.
+date-toto.sh : chaque seconde, ce script affiche le mot "toto" suivi de l'heure qu'il était 5 heures avant l'heure actuelle, toujours au format HH:MM:SS.
+
+## 4 Exercice 3 : les tubes
+
+1.1 `cat` est utilisé pour la lecture et affichage de fichiers tandis que `tee` capture une sortie (+ affichage simultané dans le terminal) et permet l'enregistrement
+dans un fichier.
+
+1.2 
+`ls | cat` : cette commande liste les fichiers du répertoire actuel, puis cette sortie est envoyée via un pipe à cat
+`ls -l | cat > liste` : liste les fichiers avec des détails (permissions, taille, ...) puis cette sortie est redirigée via un pipe à cat
+qui écrit ce contenu dans le fichier "liste" grâce au symbole ">"
+`ls -l | tee liste` : liste les fichiers avec des détails, et tee enregistre cette sortie dans le fichier "liste"
+`ls -l | tee liste | wc -l` : liste les fichiers avec des des détails, puis tee enregistre cette sortie dans le fichier "liste" et cela est envoyée à wc -1, qui compte le
+nombre de lignes et l'affiche dans le terminal.
+
+## 5 Journal système rsyslog
+
+1 - Le service rsyslog n'est pas installé sur mon système. J'ai dû exécuter la commande `sudo apt install rsyslog` pour installer rsyslog et 
+`sudo systemctl start rsyslog` pour démarrer le service. Les PID du daemon sont "981" et 999".
+
+2 - Les messages écrit par rsyslog sont enregistré dans /var/log/syslog. 
+
+3 - Le service cron permet de planifier ou programmer des tâches. La plupart des autres messages sont dans "/var/log/messages".
+
+4 La commande `tail -f` lit la dernière partie d'un fichier. Lorsque l'on redémarre le service cron dans un autre shell, le service commence à traiter les tâches
+planifiées à nouveau. Cela inclut des messages indiquant que le service a été démarré avec succès.
+
+5 - Le fichier "/etc/logrotate.conf" est utilisé pour la gestion des fichiers journaux du système. Il permet de définir des politiques qui aident à maintenir l'intégrité
+du système et à prévenir les problèmes liés à l'espace disque. 
+
+6 - Le modèle de processeur détecté par Linux est "AMD Ryzen 5 3500U with Radeon Vega Mobile Gfx". Le modèle de carte réseau qu'il détecte est 
+"Intel Corporation 82540EM Gigabit Ethernet Controller (rev 02)".
