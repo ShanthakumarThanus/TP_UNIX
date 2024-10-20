@@ -15,6 +15,7 @@ Voici le script "analyse.sh" :
     do
             printf "Voici la liste des paramètres : $var \n"
     done
+    ```
 
 ## Exercice : vérification du nombre de paramètres
 
@@ -31,6 +32,7 @@ Voici le script "concat.sh" :
     CONCAT="${arg1} ${arg2}"
 
     printf "Résultat : $CONCAT"
+    ```
 
 ## Exercice : argument type et droits
 
@@ -55,6 +57,7 @@ Voici le script "test-fichier.sh" :
 
     printf "Type du fichier : $type_fichier"
     printf "Permissions d'accès pour l'utilisateur : $permissions"
+    ```
 
 ## Exercice : Afficher le contenu d'un répertoire
 
@@ -73,6 +76,7 @@ Voici le script "listedir.sh" :
 
     printf -e "\nSous-répertoires dans le répertoire $1 :"
     find "$1" -maxdepth 1 -type d ! -path "$1"
+    ```
 
 ## Exercice : Lister les utilisateurs
 
@@ -85,6 +89,7 @@ Voici le script pour afficher la liste des noms de login des utilisateurs défin
         printf "$username \n"
     fi
     done < /etc/passwd
+    ```
 
 La commande `for user in $(cat /etc/passwd); do echo $user;` présente un problème lorsqu'elle divise le contenu en éléments individuels en fonction des espaces, ce qui ne convient pas pour parcourir chaque ligne. Résolution du problème à l'aide de : 
 
@@ -100,6 +105,7 @@ La commande `for user in $(cat /etc/passwd); do echo $user;` présente un probl�
         echo "$username : $uid"
     fi
     done < /etc/passwd
+    ```
 
     et `awk` :
 
@@ -107,6 +113,7 @@ La commande `for user in $(cat /etc/passwd); do echo $user;` présente un probl�
     #!/bin/bash
 
     awk -F: '$3 > 100 {print $1}' /etc/passwd
+    ```
 
 
 ## Exercice : Mon utilisateur existe t’il
@@ -133,8 +140,11 @@ Script pour vérifier si un utilisateur existe déjà, soit par son login, soit 
     login=$(awk -F: -v uid="$2" '$3 == uid {print $1}' /etc/passwd)
     [ -n "$login" ] && echo "L'utilisateur avec l'UID $2 est : $login"
     fi
+    ```
 
 ## Exercice : Creation utilisateur
+
+Script pour créer un compte utilisateur :
 
     ```bash
     #!/bin/bash
@@ -145,9 +155,13 @@ Script pour vérifier si un utilisateur existe déjà, soit par son login, soit 
         exit 1
     fi
 
-    # read les informations nécessaires
+    # demande les informations nécessaires
     read -p "Login: " login
+    read -p "Nom: " nom
+    read -p "Prenom: " prenom
     read -p "UID: " uid
+    read -p "GID: " gid
+    read -p "Commentaires: " commentaires
 
     # vérification si utilisateur existe déjà
     if id -u "$login" >/dev/null 2>&1; then
@@ -155,13 +169,20 @@ Script pour vérifier si un utilisateur existe déjà, soit par son login, soit 
         exit 1
     fi
 
-    # création nouvel utilisateur
-    useradd -m -d "/home/$login" -u "$uid" "$login"
+    # vérifier si le répertoire home existe déjà
+    if [ -d "/home/$login" ]; then
+        echo "Le répertoire /home/$login existe déjà."
+        exit 1
+    fi
 
-    # cérifier si la création a réussi
+    # créer le nouvel utilisateur
+    useradd -m -d "/home/$login" -u "$uid" -g "$gid" -c "$nom $prenom, $commentaires" "$login"
+
+    # vérifier si la création a réussi
     if [ $? -eq 0 ]; then
         echo "Utilisateur $login créé avec succès."
     else
         echo "Échec de la création de l'utilisateur $login."
         exit 1
     fi
+    ```
