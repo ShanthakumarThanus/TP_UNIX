@@ -22,6 +22,8 @@ Voici le script "analyse.sh" :
 Voici le script "concat.sh" :
 
     ```bash
+    #!/bin/bash
+    
     if [ "$#" -ne 2 ]; then
         printf "Erreur : Veuillez saisir 2 arguments"
         exit 1
@@ -39,6 +41,8 @@ Voici le script "concat.sh" :
 Voici le script "test-fichier.sh" :
 
     ```bash
+    #!/bin/bash
+    
     if [ "$#" -ne 1 ]; then
         printf "Erreur : Veuillez saisir un arguments"
         exit 1
@@ -84,6 +88,7 @@ Voici le script pour afficher la liste des noms de login des utilisateurs défin
 
     ```bash
     #!/bin/bash
+    
     while IFS=: read -r username _ uid _; do
     if [ "$uid" -gt 100 ]; then
         printf "$username \n"
@@ -99,10 +104,10 @@ La commande `for user in $(cat /etc/passwd); do echo $user;` présente un probl�
     #!/bin/bash
 
     while IFS=: read -r ligne; do
-    username=$(echo "$ligne" | cut -d: -f1)
-    uid=$(echo "$ligne" | cut -d: -f3)
+    username=$(printf "$ligne" | cut -d: -f1)
+    uid=$(printf "$ligne" | cut -d: -f3)
     if [ "$uid" -gt 100 ]; then
-        echo "$username : $uid"
+        printf "$username : $uid"
     fi
     done < /etc/passwd
     ```
@@ -125,20 +130,20 @@ Script pour vérifier si un utilisateur existe déjà, soit par son login, soit 
 
     # Vérifier si un argument est fourni
     if [ -z "$1" ] || [ -z "$2" ]; then
-    echo "Usage: $0 <login|uid> <value>"
+    printf "Usage: $0 <login|uid> <value>"
     exit 1
     fi
 
     # Vérification par login
     if [ "$1" == "login" ]; then
     uid=$(grep "^${2}:" /etc/passwd | cut -d: -f3)
-    [ -n "$uid" ] && echo "UID de l'utilisateur $2 : $uid"
+    [ -n "$uid" ] && printf "UID de l'utilisateur $2 : $uid"
     fi
 
     # Vérification par UID
     if [ "$1" == "uid" ]; then
     login=$(awk -F: -v uid="$2" '$3 == uid {print $1}' /etc/passwd)
-    [ -n "$login" ] && echo "L'utilisateur avec l'UID $2 est : $login"
+    [ -n "$login" ] && printf "L'utilisateur avec l'UID $2 est : $login"
     fi
     ```
 
@@ -151,7 +156,7 @@ Script pour créer un compte utilisateur :
 
     # vérification root
     if [ "$USER" != "root" ]; then
-        echo "Ce script doit être exécuté en tant que root."
+        printf "Ce script doit être exécuté en tant que root."
         exit 1
     fi
 
@@ -165,13 +170,13 @@ Script pour créer un compte utilisateur :
 
     # vérification si utilisateur existe déjà
     if id -u "$login" >/dev/null 2>&1; then
-        echo "L'utilisateur $login existe déjà."
+        printf "L'utilisateur $login existe déjà."
         exit 1
     fi
 
     # vérifier si le répertoire home existe déjà
     if [ -d "/home/$login" ]; then
-        echo "Le répertoire /home/$login existe déjà."
+        printf "Le répertoire /home/$login existe déjà."
         exit 1
     fi
 
@@ -180,9 +185,9 @@ Script pour créer un compte utilisateur :
 
     # vérifier si la création a réussi
     if [ $? -eq 0 ]; then
-        echo "Utilisateur $login créé avec succès."
+        printf "Utilisateur $login créé avec succès."
     else
-        echo "Échec de la création de l'utilisateur $login."
+        printf "Échec de la création de l'utilisateur $login."
         exit 1
     fi
     ```
@@ -201,7 +206,7 @@ Script qui propose à l'utilisateur de visualiser page par page chaque fichier t
     ```bash
     # vérifier si l'argument donné est bien un répertoire
     if [ -z "$1" ]; then
-        echo "Veuillez saisir le nom du fichier"
+        printf "Veuillez saisir le nom du fichier"
         exit 1
     fi
 
@@ -233,17 +238,17 @@ Script qui demande à l'utilisateur de saisir une note et qui affiche un message
             fi
 
             if [ "$note" -ge 16 ] && [ "$note" -le 20 ]; then
-                    echo "Très bien"
+                    printf "Très bien"
             elif [ "$note" -ge 14 ] && [ "$note" -lt 16 ]; then
-                    echo "Bien"
+                    printf "Bien"
             elif [ "$note" -ge 12 ] && [ "$note" -lt 14 ]; then
-                    echo "Assez bien"
+                    printf "Assez bien"
             elif [ "$note" -ge 10 ] && [ "$note" -lt 12 ]; then
-                    echo "Moyen"
+                    printf "Moyen"
             elif [ "$note" -lt 10 ]; then
-                    echo "Insuffisant"
+                    printf "Insuffisant"
             else
-                    echo "Note invalide. Veuillez saisir une note entre 0 et 20 ou appuyez sur q pour quitter."
+                    printf "Note invalide. Veuillez saisir une note entre 0 et 20 ou appuyez sur q pour quitter."
             fi
     done
     ```
