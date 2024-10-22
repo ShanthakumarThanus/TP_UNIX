@@ -186,3 +186,64 @@ Script pour créer un compte utilisateur :
         exit 1
     fi
     ```
+
+## Exercice : lecture au clavier
+
+- Comment quitter more ? Avec la touche "q"
+- Comment avancer d'une ligne ? Appuyer sur "Entrée"
+- Comment avancer d'une page ? Appuyer sur "Espace"
+- Comment remonter d'une page ? Appuyer sur "b"
+- Comment chercher une chaîne de caractères ? Appuyer sur "/"
+- Passer à l'occurence suivante ? Appuyer de nouveau sur "/" puis "Entrée"
+
+Script qui propose à l'utilisateur de visualiser page par page chaque fichier texte du répertoire spécifié en argument :
+
+    ```bash
+    # vérifier si l'argument donné est bien un répertoire
+    if [ -z "$1" ]; then
+        echo "Veuillez saisir le nom du fichier"
+        exit 1
+    fi
+
+    # boucle for pour parcourir chaque fichier du répertoire
+    for file in "$1"/*; do
+        # vérifier si c'est un fichier .txt
+        if file "$file" | grep -q "text"; then
+        # demande à l'utilisateur, la réponse sera stockée dans "response"
+        read -p "Voulez-vous visualiser le fichier $file ? (y/n) : " response
+                if [ "$response" = "y" ]; then
+                        more "$file"
+                fi
+        fi
+    done
+    ```
+
+## Exercice : appréciation
+
+Script qui demande à l'utilisateur de saisir une note et qui affiche un message en fonction de la note saisi :
+
+    ```bash
+    #!/bin/bash
+
+    while true; do
+            read -p "Saississez une note (pour quitter, appuyez sur la touche "q") : " note
+
+            if [ "$note" = "q" ]; then
+                    exit 0
+            fi
+
+            if [ "$note" -ge 16 ] && [ "$note" -le 20 ]; then
+                    echo "Très bien"
+            elif [ "$note" -ge 14 ] && [ "$note" -lt 16 ]; then
+                    echo "Bien"
+            elif [ "$note" -ge 12 ] && [ "$note" -lt 14 ]; then
+                    echo "Assez bien"
+            elif [ "$note" -ge 10 ] && [ "$note" -lt 12 ]; then
+                    echo "Moyen"
+            elif [ "$note" -lt 10 ]; then
+                    echo "Insuffisant"
+            else
+                    echo "Note invalide. Veuillez saisir une note entre 0 et 20 ou appuyez sur q pour quitter."
+            fi
+    done
+    ```
