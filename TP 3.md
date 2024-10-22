@@ -33,7 +33,7 @@ Voici le script "concat.sh" :
     arg2=$2
     CONCAT="${arg1} ${arg2}"
 
-    printf "Résultat : $CONCAT"
+    printf "Résultat : %s\n" "$CONCAT"
     ```
 
 ## Exercice : argument type et droits
@@ -51,7 +51,7 @@ Voici le script "test-fichier.sh" :
     fichier=$1
 
     if [ ! -e "$fichier" ]; then
-            printf "Le fichier '$fichier' n'existe pas."
+            printf "Le fichier '%s' n'existe pas.\n" "$fichier"
             exit 1
     fi
 
@@ -59,8 +59,8 @@ Voici le script "test-fichier.sh" :
 
     permissions=$(ls -l "$fichier" | awk '{print $1}')
 
-    printf "Type du fichier : $type_fichier"
-    printf "Permissions d'accès pour l'utilisateur : $permissions"
+    printf "Type du fichier : %s\n" "$type_fichier"
+    printf "Permissions d'accès pour l'utilisateur : %s\n" "$permissions"
     ```
 
 ## Exercice : Afficher le contenu d'un répertoire
@@ -71,14 +71,14 @@ Voici le script "listedir.sh" :
     #!/bin/bash
 
     if [ -z "$1" ]; then
-    printf "Veuillez saisir le chemin du répertoire."
+    printf "Veuillez saisir le chemin du répertoire. \n"
     exit 1
     fi
 
-    printf "Fichiers dans le répertoire $1 :"
+    printf "Fichiers dans le répertoire %s:\n" "$1"
     find "$1" -maxdepth 1 -type f
 
-    printf -e "\nSous-répertoires dans le répertoire $1 :"
+    printf -e "\n Sous-répertoires dans le répertoire %s: \n"
     find "$1" -maxdepth 1 -type d ! -path "$1"
     ```
 
@@ -107,7 +107,7 @@ La commande `for user in $(cat /etc/passwd); do echo $user;` présente un probl�
     username=$(printf "$ligne" | cut -d: -f1)
     uid=$(printf "$ligne" | cut -d: -f3)
     if [ "$uid" -gt 100 ]; then
-        printf "$username : $uid"
+        printf "%s : %s\n" "$username" "$uid"
     fi
     done < /etc/passwd
     ```
